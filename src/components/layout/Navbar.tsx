@@ -22,12 +22,12 @@ export const Navbar: React.FC = () => {
         </div>
         
         <div className="hidden md:flex items-center gap-6">
-          <Link to="/dashboard" className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-cyan-400/10 transition-colors">
-            <Search className="w-4 h-4 text-cyan-400" />
-            <span className="text-sm font-medium text-slate-200 hover:text-white transition-colors">
-              Find Scrims
-            </span>
-          </Link>
+          <Link to="/find-scrims" className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-cyan-400/10 transition-colors">
+                      <Search className="w-4 h-4 text-cyan-400" />
+                      <span className="text-sm font-medium text-slate-200 hover:text-white transition-colors">
+                        Find Scrims
+                      </span>
+                    </Link>
           
           <Link to="/teams" className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-cyan-400/10 transition-colors">
                       <User className="w-4 h-4 text-cyan-400" />

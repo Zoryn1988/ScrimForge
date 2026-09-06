@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Trophy, Users as UsersIcon, MapPin, TrendingUp, Calendar, Clock, ChevronRight, Shield, Star, Award, Target, MessageSquare, Mic, FileText, Crown, Edit } from 'lucide-react';
+import { Trophy, Users as UsersIcon, MapPin, TrendingUp, Calendar, Clock, ChevronRight, Shield, Star, Award, Target, MessageSquare, FileText, Crown, Edit, AtSign } from 'lucide-react';
 import { TierBadge } from '@/components/esports/TierBadge';
 import { SAMPLE_MY_TEAM, SAMPLE_RECENT_RESULTS, Player, LeagueTier } from '@/data/mockData';
 import { LaneRole } from '@/data/mockData';
@@ -21,13 +21,6 @@ const tierRankValue: Record<LeagueTier, number> = {
   Grandmaster: 3,
   Master: 2,
   Diamond: 1,
-};
-
-const tierToLp: Record<LeagueTier, number> = {
-  Challenger: 1000,
-  Grandmaster: 500,
-  Master: 250,
-  Diamond: 100,
 };
 
 // Calculate average rank from roster players
@@ -184,12 +177,12 @@ export const Team: React.FC = () => {
             </div>
           </div>
 
-          {/* Captain & Comms Info */}
+          {/* Captain & Primary Contact */}
           <div className="hextech-card rounded-xl p-6">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-lg font-orbitron font-bold text-white flex items-center gap-2">
                 <Crown className="w-5 h-5 text-cyan-400" />
-                Team Leadership
+                Team Captain
               </h2>
               <button className="text-slate-400 hover:text-cyan-400 transition-colors">
                 <Edit className="w-4 h-4" />
@@ -212,71 +205,15 @@ export const Team: React.FC = () => {
               <div className="flex items-center justify-between p-3 bg-[#0B1220]/50 rounded-lg border border-cyan-400/10">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-cyan-400/20 flex items-center justify-center">
-                    <MessageSquare className="w-5 h-5 text-cyan-400" />
+                    <AtSign className="w-5 h-5 text-cyan-400" />
                   </div>
                   <div>
-                    <div className="text-xs text-slate-400 uppercase tracking-wider">Discord Server</div>
-                    <div className="text-sm text-white font-medium">discord.gg/placeholder</div>
-                  </div>
-                </div>
-              </div>
-              <div className="flex items-center justify-between p-3 bg-[#0B1220]/50 rounded-lg border border-cyan-400/10">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-cyan-400/20 flex items-center justify-center">
-                    <Mic className="w-5 h-5 text-cyan-400" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-slate-400 uppercase tracking-wider">Voice Comms</div>
-                    <div className="text-sm text-white font-medium">Discord Voice (placeholder)</div>
+                    <div className="text-xs text-slate-400 uppercase tracking-wider">Primary Contact (Discord)</div>
+                    <div className="text-sm text-white font-medium">@placeholder#0000</div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Preferred Scrim Times & BO Formats */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <div className="hextech-card rounded-xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-orbitron font-bold text-white flex items-center gap-2">
-                <Clock className="w-5 h-5 text-cyan-400" />
-                Preferred Scrim Times
-              </h2>
-              <button className="text-slate-400 hover:text-cyan-400 transition-colors">
-                <Edit className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="space-y-2">
-              {['Mon - Thu: 7:00 PM - 11:00 PM EST', 'Fri - Sat: 2:00 PM - 12:00 AM EST', 'Sun: 4:00 PM - 10:00 PM EST'].map((time, idx) => (
-                <div key={idx} className="flex items-center gap-3 p-2.5 bg-[#0B1220]/50 rounded-lg border border-cyan-400/10">
-                  <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
-                  <span className="text-sm text-slate-200">{time}</span>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-slate-500 italic mt-3">Time slots are editable placeholders</p>
-          </div>
-
-          <div className="hextech-card rounded-xl p-6">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-lg font-orbitron font-bold text-white flex items-center gap-2">
-                <Target className="w-5 h-5 text-cyan-400" />
-                Preferred BO Formats
-              </h2>
-              <button className="text-slate-400 hover:text-cyan-400 transition-colors">
-                <Edit className="w-4 h-4" />
-              </button>
-            </div>
-            <div className="grid grid-cols-3 gap-3">
-              {['BO1 (3 Games)', 'BO3', 'BO5'].map((format) => (
-                <div key={format} className="p-4 bg-[#0B1220]/50 rounded-lg border border-cyan-400/30 text-center">
-                  <div className="text-cyan-400 font-bold text-lg mb-1">{format}</div>
-                  <div className="text-xs text-slate-400">Available</div>
-                </div>
-              ))}
-            </div>
-            <p className="text-xs text-slate-500 italic mt-3">Format preferences are editable placeholders</p>
           </div>
         </div>
 

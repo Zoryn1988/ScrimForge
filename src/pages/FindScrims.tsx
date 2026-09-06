@@ -4,22 +4,26 @@ import { Calendar, Clock, MapPin, Filter, Search, ChevronRight, Plus, X, CheckCi
 import { TierBadge } from '@/components/esports/TierBadge';
 import { SAMPLE_OPPONENT_TEAMS, SAMPLE_SCRIM_LOBBIES, ScrimLobby, ServerRegion, LeagueTier } from '@/data/mockData';
 
-type RequestStatus = 'Open' | 'Pending' | 'Confirmed' | 'Completed' | 'Cancelled';
+type RequestStatus = 'Open' | 'Pending' | 'Accepted' | 'Scheduled' | 'Completed' | 'Cancelled' | 'Expired';
 
 const statusColors: Record<RequestStatus, string> = {
   Open: 'bg-blue-500/20 text-blue-400 border-blue-500/30',
   Pending: 'bg-yellow-500/20 text-yellow-400 border-yellow-500/30',
-  Confirmed: 'bg-green-500/20 text-green-400 border-green-500/30',
+  Accepted: 'bg-green-500/20 text-green-400 border-green-500/30',
+  Scheduled: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
   Completed: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
   Cancelled: 'bg-red-500/20 text-red-400 border-red-500/30',
+  Expired: 'bg-orange-500/20 text-orange-400 border-orange-500/30',
 };
 
 const statusIcons: Record<RequestStatus, React.ReactNode> = {
   Open: <CheckCircle className="w-4 h-4 text-blue-400" />,
   Pending: <AlertCircle className="w-4 h-4 text-yellow-400" />,
-  Confirmed: <CheckCircle className="w-4 h-4 text-green-400" />,
+  Accepted: <CheckCircle className="w-4 h-4 text-green-400" />,
+  Scheduled: <Calendar className="w-4 h-4 text-cyan-400" />,
   Completed: <CheckCircle className="w-4 h-4 text-slate-400" />,
   Cancelled: <Ban className="w-4 h-4 text-red-400" />,
+  Expired: <XCircle className="w-4 h-4 text-orange-400" />,
 };
 
 const formatOptions = ['BO1 (3 Games)', 'BO3', 'BO5'];
@@ -72,6 +76,15 @@ export const FindScrims: React.FC = () => {
     if (filters.server && lobby.serverRegion !== filters.server) return false;
     if (filters.rank && lobby.hostTeam.tier !== filters.rank) return false;
     if (filters.format && lobby.format !== filters.format) return false;
+    if (filters.date) {
+      const lobbyDate = new Date(lobby.scheduledTime).toDateString();
+      const filterDate = new Date(filters.date).toDateString();
+      if (lobbyDate !== filterDate) return false;
+    }
+    if (filters.time) {
+      const lobbyTime = new Date(lobby.scheduledTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      if (lobbyTime !== filters.time) return false;
+    }
     return true;
   });
 
@@ -100,18 +113,18 @@ export const FindScrims: React.FC = () => {
             className="btn-primary px-6 py-3 font-bold flex items-center gap-2 self-start"
           >
             <Plus className="w-5 h-5" />
-            Post Listing
+            Create Scrim Request
           </button>
         </div>
 
         {/* New Listing Form */}
         {showForm && (
           <div className="hextech-card rounded-xl p-6 mb-8 border-cyan-400/40">
-            <h2 className="text-xl font-orbitron font-bold text-white mb-4">Create Scrim Listing</h2>
+            <h2 className="text-xl font-orbitron font-bold text-white mb-4">Create Scrim Request</h2>
             <form onSubmit={handleSubmitListing} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-medium text-slate-300 mb-2">Listing Title</label>
+                  <label className="block text-sm font-medium text-slate-300 mb-2">Request Title</label>
                   <input
                     type="text"
                     value={newListing.title}
@@ -168,7 +181,7 @@ export const FindScrims: React.FC = () => {
               </div>
               <div className="flex gap-3">
                 <button type="submit" className="btn-primary px-6 py-3 font-bold">
-                  Post Listing
+                  Create Scrim Request
                 </button>
                 <button
                   type="button"
@@ -262,11 +275,11 @@ export const FindScrims: React.FC = () => {
           </div>
         </div>
 
-        {/* Scrim Listings */}
+        {/* Scrim Requests */}
         <div className="mb-8">
           <h2 className="text-xl font-orbitron font-bold text-white mb-4 flex items-center gap-2">
             <Search className="w-5 h-5 text-cyan-400" />
-            Scrim Listings
+            Scrim Requests
           </h2>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -329,10 +342,10 @@ export const FindScrims: React.FC = () => {
                   <span className="text-xs text-slate-500">Lobby: {lobby.lobbyCode}</span>
                   <div className="flex gap-2">
                     <button className="btn-secondary px-4 py-2 text-sm font-medium border border-cyan-400/30 hover:bg-cyan-400/10">
-                      View Details
+                      View Profile
                     </button>
                     <button className="btn-primary px-4 py-2 text-sm font-medium">
-                      Join
+                      Send Scrim Request
                     </button>
                   </div>
                 </div>
@@ -382,7 +395,7 @@ export const FindScrims: React.FC = () => {
                       </button>
                     </Link>
                     <button className="btn-primary px-4 py-2 text-sm font-medium">
-                      Invite
+                      Send Scrim Request
                     </button>
                   </div>
                 </div>

@@ -33,9 +33,9 @@ export const Index: React.FC = () => {
                 Start Your Team
                 <ChevronRight className="w-5 h-5" />
               </Link>
-              <Link to="/dashboard" className="btn-secondary px-8 py-4 text-lg font-bold border border-cyan-400/30 hover:bg-cyan-400/10">
-                Find Scrims
-              </Link>
+              <Link to="/find-scrims" className="btn-secondary px-8 py-4 text-lg font-bold border border-cyan-400/30 hover:bg-cyan-400/10">
+                              Find Scrims
+                            </Link>
             </div>
           </div>
         </div>
@@ -95,10 +95,10 @@ export const Index: React.FC = () => {
               </h2>
               <p className="text-slate-400">Find your next competitive match</p>
             </div>
-            <Link to="/dashboard" className="hidden md:flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium">
-              View All Scrims
-              <ChevronRight className="w-4 h-4" />
-            </Link>
+            <Link to="/find-scrims" className="hidden md:flex items-center gap-2 text-cyan-400 hover:text-cyan-300 font-medium">
+                          View All Scrims
+                          <ChevronRight className="w-4 h-4" />
+                        </Link>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

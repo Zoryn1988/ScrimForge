@@ -1,5 +1,5 @@
 import React from 'react';
-import { Swords, Shield, Flame, Zap } from 'lucide-react';
+import { Hammer, Shield, Flame, Zap } from 'lucide-react';
 
 interface LogoProps {
   size?: 'sm' | 'md' | 'lg' | 'xl';
@@ -21,7 +21,7 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showText = true, classN
         <div className="absolute inset-0 rounded-lg bg-gradient-to-br from-cyan-400/30 to-blue-600/20 blur-md" />
         <div className="relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12 rounded-lg bg-gradient-to-br from-[#00F0FF]/20 to-[#0070F3]/10 border border-cyan-400/40">
           <div className="absolute inset-0 rounded-lg bg-gradient-to-tr from-cyan-400/5 to-transparent" />
-          <Swords className="w-6 h-6 md:w-7 md:h-7 text-cyan-400 drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]" />
+          <Hammer className="w-6 h-6 md:w-7 md:h-7 text-cyan-400 drop-shadow-[0_0_8px_rgba(0,240,255,0.6)]" />
           <div className="absolute top-0 right-0 w-2 h-2 rounded-full bg-cyan-300 blur-[2px] animate-pulse" />
         </div>
       </div>

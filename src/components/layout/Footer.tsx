@@ -9,8 +9,8 @@ export const Footer: React.FC = () => {
           <div className="flex items-center gap-3">
             <Shield className="w-5 h-5 text-cyan-400" />
             <span className="text-sm text-slate-400">
-              © 2024 ScrimForge. All rights reserved.
-            </span>
+                          © 2026 ScrimForge. All rights reserved.
+                        </span>
           </div>
           
           <div className="flex items-center gap-3">

@@ -6,6 +6,7 @@ import { Login } from '@/pages/Login';
 import { Signup } from '@/pages/Signup';
 import { Dashboard } from '@/pages/Dashboard';
 import { Team } from '@/pages/Team';
+import { FindScrims } from '@/pages/FindScrims';
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/find-scrims" element={<FindScrims />} />
           <Route path="/team/:id" element={<Team />} />
           <Route path="/teams" element={<Team />} />
         </Route>

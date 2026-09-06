@@ -62,12 +62,17 @@ export const Index: React.FC = () => {
             </div>
             
             <div className="hextech-card rounded-xl p-6 text-center">
-              <div className="w-12 h-12 rounded-full bg-cyan-400/20 flex items-center justify-center mx-auto mb-3">
-                <Trophy className="w-6 h-6 text-cyan-400" />
-              </div>
-              <div className="text-3xl font-bold text-white mb-1">150</div>
-              <div className="text-sm text-slate-400">Tournaments</div>
-            </div>
+                          <div className="w-12 h-12 rounded-full bg-cyan-400/20 flex items-center justify-center mx-auto mb-3">
+                            <Trophy className="w-6 h-6 text-cyan-400" />
+                          </div>
+                          <div className="text-lg font-bold text-white mb-1">
+                            Challenger: 50<br />
+                            Grandmaster: 120<br />
+                            Master: 200<br />
+                            Diamond: 300
+                          </div>
+                          <div className="text-sm text-slate-400">Tier Distribution</div>
+                        </div>
             
             <div className="hextech-card rounded-xl p-6 text-center">
               <div className="w-12 h-12 rounded-full bg-cyan-400/20 flex items-center justify-center mx-auto mb-3">

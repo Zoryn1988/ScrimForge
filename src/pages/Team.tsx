@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Trophy, Users as UsersIcon, MapPin, TrendingUp, Calendar, Clock, ChevronRight, Shield, Star, Award, Target } from 'lucide-react';
+import { Trophy, Users as UsersIcon, MapPin, TrendingUp, Calendar, Clock, ChevronRight, Shield, Star, Award, Target, MessageSquare, Mic, FileText, Crown, Edit } from 'lucide-react';
 import { TierBadge } from '@/components/esports/TierBadge';
-import { SAMPLE_MY_TEAM, SAMPLE_RECENT_RESULTS } from '@/data/mockData';
+import { SAMPLE_MY_TEAM, SAMPLE_RECENT_RESULTS, Player, LeagueTier } from '@/data/mockData';
 import { LaneRole } from '@/data/mockData';
 
 const roleColors: Record<LaneRole, string> = {
@@ -15,6 +15,50 @@ const roleColors: Record<LaneRole, string> = {
   COACH: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
 };
 
+// Tier ranking value for calculation (higher = better)
+const tierRankValue: Record<LeagueTier, number> = {
+  Challenger: 4,
+  Grandmaster: 3,
+  Master: 2,
+  Diamond: 1,
+};
+
+const tierToLp: Record<LeagueTier, number> = {
+  Challenger: 1000,
+  Grandmaster: 500,
+  Master: 250,
+  Diamond: 100,
+};
+
+// Calculate average rank from roster players
+const calculateAverageRank = (roster: Player[]): { tier: LeagueTier; lp: number; label: string } => {
+  if (roster.length === 0) return { tier: 'Diamond', lp: 0, label: 'Unranked' };
+
+  // Filter out coach/sub for competitive roster calculation
+  const competitiveRoster = roster.filter(p => p.role !== 'COACH' && p.role !== 'SUB');
+  const targetRoster = competitiveRoster.length > 0 ? competitiveRoster : roster;
+
+  const totalScore = targetRoster.reduce((acc, p) => {
+    const tierScore = tierRankValue[p.rank] * 1000;
+    return acc + tierScore + p.lp;
+  }, 0);
+  const avgScore = totalScore / targetRoster.length;
+
+  // Reverse-calculate the tier
+  let tier: LeagueTier = 'Diamond';
+  if (avgScore >= 4000) tier = 'Challenger';
+  else if (avgScore >= 3000) tier = 'Grandmaster';
+  else if (avgScore >= 2000) tier = 'Master';
+  else tier = 'Diamond';
+
+  // Approximate the LP within that tier
+  const tierBase = tierRankValue[tier] * 1000;
+  const lpInTier = Math.max(0, Math.round(avgScore - tierBase));
+  const label = `${tier} ${lpInTier} LP`;
+
+  return { tier, lp: lpInTier, label };
+};
+
 export const Team: React.FC = () => {
   const team = SAMPLE_MY_TEAM;
 
@@ -25,6 +69,7 @@ export const Team: React.FC = () => {
   };
 
   const record = formatRecord(team.scrimRecord.wins, team.scrimRecord.losses);
+  const avgRank = calculateAverageRank(team.roster);
 
   return (
     <div className="min-h-screen bg-[#060A10]">
@@ -59,11 +104,15 @@ export const Team: React.FC = () => {
                   <span className="flex items-center gap-1">
                     <Calendar className="w-4 h-4" /> {team.totalScrimsPlayed} Scrims Played
                   </span>
+                  <span className="flex items-center gap-1">
+                    <Trophy className="w-4 h-4" /> {team.scrimRecord.wins}W - {team.scrimRecord.losses}L
+                  </span>
                 </div>
               </div>
               
               <div className="flex gap-3 pb-2">
-                <button className="btn-secondary px-4 py-2 text-sm font-medium border border-cyan-400/30 hover:bg-cyan-400/10">
+                <button className="btn-secondary px-4 py-2 text-sm font-medium border border-cyan-400/30 hover:bg-cyan-400/10 flex items-center gap-2">
+                  <Edit className="w-4 h-4" />
                   Edit Team
                 </button>
                 <button className="btn-primary px-4 py-2 text-sm font-medium">
@@ -99,15 +148,135 @@ export const Team: React.FC = () => {
               <Award className="w-5 h-5 text-yellow-400" />
             </div>
             <div className="text-2xl font-bold text-white mb-1">{team.scrimRecord.wins}-{team.scrimRecord.losses}</div>
-            <div className="text-sm text-slate-400">Record (W-L)</div>
+            <div className="text-sm text-slate-400">Win-Loss</div>
           </div>
           
           <div className="hextech-card rounded-xl p-5 text-center">
             <div className="w-10 h-10 rounded-full bg-purple-400/20 flex items-center justify-center mx-auto mb-3">
               <Target className="w-5 h-5 text-purple-400" />
             </div>
-            <div className="text-2xl font-bold text-white mb-1">{team.avgRank}</div>
-            <div className="text-sm text-slate-400">Avg Rank</div>
+            <div className="text-lg font-bold text-white mb-1">{avgRank.label}</div>
+            <div className="text-sm text-slate-400">Avg Rank (Calculated)</div>
+          </div>
+        </div>
+
+        {/* Team Info Placeholders */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          {/* Team Bio */}
+          <div className="hextech-card rounded-xl p-6">
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-lg font-orbitron font-bold text-white flex items-center gap-2">
+                <FileText className="w-5 h-5 text-cyan-400" />
+                Team Bio
+              </h2>
+              <button className="text-slate-400 hover:text-cyan-400 transition-colors">
+                <Edit className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-sm text-slate-300 leading-relaxed">
+              {team.description}
+            </p>
+            <div className="mt-4 pt-4 border-t border-cyan-400/10">
+              <p className="text-xs text-slate-500 uppercase tracking-wider mb-1">Placeholder</p>
+              <p className="text-sm text-slate-400 italic">
+                Team bio will be editable. Describe your team's identity, goals, playstyle, and history here.
+              </p>
+            </div>
+          </div>
+
+          {/* Captain & Comms Info */}
+          <div className="hextech-card rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-orbitron font-bold text-white flex items-center gap-2">
+                <Crown className="w-5 h-5 text-cyan-400" />
+                Team Leadership
+              </h2>
+              <button className="text-slate-400 hover:text-cyan-400 transition-colors">
+                <Edit className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-3">
+              <div className="flex items-center justify-between p-3 bg-[#0B1220]/50 rounded-lg border border-cyan-400/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-cyan-400/20 flex items-center justify-center">
+                    <Crown className="w-5 h-5 text-cyan-400" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-400 uppercase tracking-wider">Captain</div>
+                    <div className="text-sm text-white font-medium">
+                      {team.roster[0]?.name || 'Not Assigned'} (placeholder)
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-3 bg-[#0B1220]/50 rounded-lg border border-cyan-400/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-cyan-400/20 flex items-center justify-center">
+                    <MessageSquare className="w-5 h-5 text-cyan-400" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-400 uppercase tracking-wider">Discord Server</div>
+                    <div className="text-sm text-white font-medium">discord.gg/placeholder</div>
+                  </div>
+                </div>
+              </div>
+              <div className="flex items-center justify-between p-3 bg-[#0B1220]/50 rounded-lg border border-cyan-400/10">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-cyan-400/20 flex items-center justify-center">
+                    <Mic className="w-5 h-5 text-cyan-400" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-slate-400 uppercase tracking-wider">Voice Comms</div>
+                    <div className="text-sm text-white font-medium">Discord Voice (placeholder)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Preferred Scrim Times & BO Formats */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="hextech-card rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-orbitron font-bold text-white flex items-center gap-2">
+                <Clock className="w-5 h-5 text-cyan-400" />
+                Preferred Scrim Times
+              </h2>
+              <button className="text-slate-400 hover:text-cyan-400 transition-colors">
+                <Edit className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="space-y-2">
+              {['Mon - Thu: 7:00 PM - 11:00 PM EST', 'Fri - Sat: 2:00 PM - 12:00 AM EST', 'Sun: 4:00 PM - 10:00 PM EST'].map((time, idx) => (
+                <div key={idx} className="flex items-center gap-3 p-2.5 bg-[#0B1220]/50 rounded-lg border border-cyan-400/10">
+                  <div className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                  <span className="text-sm text-slate-200">{time}</span>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-500 italic mt-3">Time slots are editable placeholders</p>
+          </div>
+
+          <div className="hextech-card rounded-xl p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-lg font-orbitron font-bold text-white flex items-center gap-2">
+                <Target className="w-5 h-5 text-cyan-400" />
+                Preferred BO Formats
+              </h2>
+              <button className="text-slate-400 hover:text-cyan-400 transition-colors">
+                <Edit className="w-4 h-4" />
+              </button>
+            </div>
+            <div className="grid grid-cols-3 gap-3">
+              {['BO1 (3 Games)', 'BO3', 'BO5'].map((format) => (
+                <div key={format} className="p-4 bg-[#0B1220]/50 rounded-lg border border-cyan-400/30 text-center">
+                  <div className="text-cyan-400 font-bold text-lg mb-1">{format}</div>
+                  <div className="text-xs text-slate-400">Available</div>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-slate-500 italic mt-3">Format preferences are editable placeholders</p>
           </div>
         </div>
 
@@ -118,6 +287,9 @@ export const Team: React.FC = () => {
               <UsersIcon className="w-5 h-5 text-cyan-400" />
               Roster
             </h2>
+            <button className="btn-secondary px-3 py-1.5 text-sm font-medium border border-cyan-400/30 hover:bg-cyan-400/10">
+              Manage Roster
+            </button>
           </div>
           
           <div className="hextech-card rounded-xl overflow-hidden">

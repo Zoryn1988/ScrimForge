@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo } from 'react'; // test
 import { 
   Trophy, 
   Search,
@@ -67,7 +67,12 @@ export const TeamsLadder: React.FC = () => {
               currentTeams.map((entry) => (
                 <div 
                   key={entry.team.id}
-                  className="grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-4 items-center hover:bg-cyan-400/[0.02] transition-colors group"
+                  className={`grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-4 items-center transition-colors group ${
+  entry.rank === 1 ? 'bg-amber-400/[0.05] hover:bg-amber-400/[0.08]' :
+  entry.rank === 2 ? 'bg-slate-300/[0.05] hover:bg-slate-300/[0.08]' :
+  entry.rank === 3 ? 'bg-orange-400/[0.05] hover:bg-orange-400/[0.08]' :
+  'hover:bg-cyan-400/[0.02]'
+}`}
                 >
                   {/* Rank */}
                   <div className="col-span-1 flex items-center justify-center">
@@ -88,7 +93,7 @@ export const TeamsLadder: React.FC = () => {
                   </div>
 
                   {/* Team Info */}
-                  <div className="col-span-5 flex items-center gap-4">
+                  <div className="col-span-4 flex items-center gap-4">
                     <div className="relative">
                       <div className="w-12 h-12 rounded-lg overflow-hidden border border-white/10 shadow-lg">
                         <img 
@@ -105,16 +110,18 @@ export const TeamsLadder: React.FC = () => {
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className="font-bold text-white group-hover:text-cyan-400 transition-colors cursor-pointer">
+                        <h3 className={`font-bold transition-colors cursor-pointer group-hover:text-cyan-400 ${
+  entry.rank === 1 ? 'text-amber-50' :
+  entry.rank === 2 ? 'text-slate-50' :
+  entry.rank === 3 ? 'text-orange-50' :
+  'text-white'
+}`}>
                           {entry.team.name}
                         </h3>
                         <span className="text-[10px] font-mono text-slate-500 px-1.5 py-0.5 bg-white/5 rounded">
                           {entry.team.tag}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-500 truncate max-w-[150px] md:max-w-none">
-                        {entry.team.avgRank}
-                      </p>
                     </div>
                   </div>
 
@@ -131,7 +138,7 @@ export const TeamsLadder: React.FC = () => {
                   </div>
 
                   {/* Win Rate */}
-                  <div className="col-span-1 hidden md:flex items-center justify-center">
+                  <div className="col-span-2 hidden md:flex items-center justify-center">
                     <div className="flex flex-col items-center">
                       <span className="text-xs font-bold text-slate-300">
                         {getWinRate(entry.team.scrimRecord.wins, entry.team.scrimRecord.losses)}%
@@ -142,7 +149,7 @@ export const TeamsLadder: React.FC = () => {
                   {/* Avg Rank */}
                   <div className="col-span-2 flex md:justify-end items-center">
                     <span className="text-sm font-medium text-slate-300">
-                      {entry.team.avgRank}
+                      {entry.team.avgRank.split(' ')[0]}
                     </span>
                   </div>
                 </div>

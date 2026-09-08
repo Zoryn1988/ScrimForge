@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Logo } from '@/components/esports/Logo';
-import { Search, Bell, User, Menu, ChevronDown } from 'lucide-react';
+import { Search, Bell, User, Menu, ChevronDown, Trophy } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   return (
@@ -29,6 +29,13 @@ export const Navbar: React.FC = () => {
                       </span>
                     </Link>
           
+          <Link to="/ladder" className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-cyan-400/10 transition-colors">
+                      <Trophy className="w-4 h-4 text-cyan-400" />
+                      <span className="text-sm font-medium text-slate-200 hover:text-white transition-colors">
+                        Ladder
+                      </span>
+                    </Link>
+
           <Link to="/teams" className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-cyan-400/10 transition-colors">
                       <User className="w-4 h-4 text-cyan-400" />
                       <span className="text-sm font-medium text-slate-200 hover:text-white transition-colors">

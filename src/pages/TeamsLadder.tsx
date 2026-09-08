@@ -38,9 +38,9 @@ export const TeamsLadder: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
           <div>
             <div className="flex items-center gap-3 mb-2">
-              <Trophy className="w-8 h-8 text-cyan-400" />
+              <Trophy className="w-8 h-8 text-red-600" />
               <h1 className="text-4xl font-orbitron font-bold text-white tracking-tight">
-                Global <span className="text-cyan-400">Ladder</span>
+                Global <span className="text-red-600">Ladder</span>
               </h1>
             </div>
             <p className="text-slate-400 max-w-2xl">
@@ -71,7 +71,7 @@ export const TeamsLadder: React.FC = () => {
   entry.rank === 1 ? 'bg-amber-400/[0.05] hover:bg-amber-400/[0.08]' :
   entry.rank === 2 ? 'bg-slate-300/[0.05] hover:bg-slate-300/[0.08]' :
   entry.rank === 3 ? 'bg-orange-400/[0.05] hover:bg-orange-400/[0.08]' :
-  'hover:bg-cyan-400/[0.02]'
+  'hover:bg-red-600/[0.03]'
 }`}
                 >
                   {/* Rank */}
@@ -83,7 +83,7 @@ export const TeamsLadder: React.FC = () => {
                           entry.rank === 2 ? 'text-slate-300' : 'text-orange-400'
                         }`} />
                       ) : (
-                        <span className="text-lg font-orbitron font-bold text-slate-500 group-hover:text-cyan-400 transition-colors">
+                        <span className="text-lg font-orbitron font-bold text-slate-500 group-hover:text-red-600 transition-colors">
                           #{entry.rank}
                         </span>
                       )}
@@ -103,14 +103,14 @@ export const TeamsLadder: React.FC = () => {
                         />
                       </div>
                       {entry.rank <= 3 && (
-                         <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-cyan-400 rounded-full border-2 border-[#060A10] flex items-center justify-center">
+                         <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-600 rounded-full border-2 border-[#060A10] flex items-center justify-center">
                            <Award className="w-2 h-2 text-[#060A10]" />
                          </div>
                       )}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className={`font-bold transition-colors cursor-pointer group-hover:text-cyan-400 ${
+                        <h3 className={`font-bold transition-colors cursor-pointer group-hover:text-red-600 ${
   entry.rank === 1 ? 'text-amber-50' :
   entry.rank === 2 ? 'text-slate-50' :
   entry.rank === 3 ? 'text-orange-50' :
@@ -127,7 +127,7 @@ export const TeamsLadder: React.FC = () => {
 
                   {/* Elo */}
                   <div className="col-span-2 hidden md:flex items-center justify-center">
-                    <span className="font-mono font-bold text-cyan-400">
+                    <span className="font-mono font-bold text-red-600">
                       {entry.team.scrimElo}
                     </span>
                   </div>
@@ -169,7 +169,7 @@ export const TeamsLadder: React.FC = () => {
         {/* Footer Info */}
         <div className="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="p-6 rounded-2xl bg-white/5 border border-white/5 flex items-start gap-4">
-            <div className="p-3 rounded-xl bg-cyan-400/10 text-cyan-400">
+            <div className="p-3 rounded-xl bg-red-600/10 text-red-600">
               <Trophy className="w-6 h-6" />
             </div>
             <div>

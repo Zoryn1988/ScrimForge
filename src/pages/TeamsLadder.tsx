@@ -121,7 +121,6 @@ export const TeamsLadder: React.FC = () => {
                       
 
                     </div>
-                  </div>
 
                   {/* Team Info */}
                   <div className="col-span-4 flex items-center gap-4">

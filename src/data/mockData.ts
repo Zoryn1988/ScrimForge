@@ -1,4 +1,4 @@
-export type LeagueTier = 'Challenger' | 'Grandmaster' | 'Master' | 'Diamond';
+export type LeagueTier = 'Challenger' | 'Grandmaster' | 'Master' | 'Diamond' | 'Emerald' | 'Platinum' | 'Gold' | 'Silver' | 'Bronze' | 'Iron';
 export type LaneRole = 'TOP' | 'JNG' | 'MID' | 'BOT' | 'SUP' | 'SUB' | 'COACH';
 export type ServerRegion = 'NA' | 'EUW' | 'EUNE' | 'KR';
 
@@ -33,6 +33,7 @@ export interface Team {
   avgRank: string;
   roster: Player[];
   description: string;
+  trend?: 'up' | 'down' | 'neutral';
 }
 
 export interface ScrimLobby {
@@ -372,3 +373,69 @@ export const SAMPLE_RECENT_RESULTS: ScrimResult[] = [
     patch: '14.11',
   },
 ];
+
+
+export const TOP_100_TEAMS: Team[] = (() => {
+  const teams: Team[] = [];
+  const prefixes = ['Aether', 'Zenith', 'Apex', 'Nexus', 'Void', 'Neon', 'Radiant', 'Storm', 'Shadow', 'Lunar', 'Solar', 'Cyber', 'Titan', 'Frost', 'Inferno', 'Nova', 'Echo', 'Quantum', 'Omega', 'Alpha'];
+  const suffixes = ['Wolves', 'Knights', 'Vanguard', 'Predators', 'Rebels', 'Titans', 'Dragons', 'Phoenix', 'Warriors', 'Kings', 'Shadows', 'Eclipses', 'Storms', 'Sentinels', 'Guardians'];
+  const regions: ServerRegion[] = ['NA', 'EUW', 'KR', 'EUNE'];
+  const tiers: LeagueTier[] = ['Challenger', 'Grandmaster', 'Master', 'Diamond', 'Emerald', 'Platinum', 'Gold', 'Silver', 'Bronze', 'Iron'];
+  const availabilities: Team['availability'][] = ['Looking for Scrim', 'In Lobby', 'Offline', 'Booked'];
+  const logos = [
+    'https://images.unsplash.com/photo-1542751371-adc38448a05e?w=160&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1563089145-599997674d42?w=160&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=160&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=160&auto=format&fit=crop&q=80'
+  ];
+  const banners = [
+    'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1557683316-973673baf3fb?w=1200&auto=format&fit=crop&q=80',
+    'https://images.unsplash.com/photo-1506744038136-46273834b3fb?w=1200&auto=format&fit=crop&q=80'
+  ];
+
+  for (let i = 1; i <= 100; i++) {
+    const tierIndex = i <= 30 ? 0 : i <= 60 ? 1 : i <= 85 ? 2 : 3;
+    const tier = tiers[tierIndex];
+    const wins = 100 - Math.floor(i / 2);
+    const losses = Math.floor(i / 5);
+    const elo = 2800 - (i * 8);
+    const lp = (i * 13) % 1000;
+
+    teams.push({
+      id: `team-${i}`,
+      name: `${prefixes[i % prefixes.length]} ${suffixes[i % suffixes.length]}`,
+      tag: `${prefixes[i % prefixes.length].substring(0, 3).toUpperCase()}${i}`,
+      logo: logos[i % logos.length],
+      banner: banners[i % banners.length],
+      region: regions[i % regions.length],
+      tier: tier,
+      scrimElo: elo,
+      scrimRecord: {
+        wins: wins,
+        losses: losses,
+      },
+      totalScrimsPlayed: wins + losses,
+      availability: availabilities[i % availabilities.length],
+      avgRank: `${tier} ${lp} LP`,
+      description: `A high-performing competitive team competing in the ${regions[i % regions.length]} region.`,
+      roster: [],
+      trend: i % 10 === 0 ? 'up' : i % 15 === 0 ? 'down' : 'neutral'
+    });
+  }
+  return teams;
+})();
+
+export const LADDER_DATA: Record<LeagueTier, Team[]> = {
+  Challenger: TOP_100_TEAMS.filter(t => t.tier === 'Challenger'),
+  Grandmaster: TOP_100_TEAMS.filter(t => t.tier === 'Grandmaster'),
+  Master: TOP_100_TEAMS.filter(t => t.tier === 'Master'),
+  Diamond: TOP_100_TEAMS.filter(t => t.tier === 'Diamond'),
+  Emerald: TOP_100_TEAMS.filter(t => t.tier === 'Emerald'),
+  Platinum: TOP_100_TEAMS.filter(t => t.tier === 'Platinum'),
+  Gold: TOP_100_TEAMS.filter(t => t.tier === 'Gold'),
+  Silver: TOP_100_TEAMS.filter(t => t.tier === 'Silver'),
+  Bronze: TOP_100_TEAMS.filter(t => t.tier === 'Bronze'),
+  Iron: TOP_100_TEAMS.filter(t => t.tier === 'Iron'),
+};
+

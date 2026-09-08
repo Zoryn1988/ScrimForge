@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.*
+
 
 # Editor directories and files
 .vscode/*
@@ -29,3 +32,22 @@ dist-ssr
 /playwright/.cache/
 .last-run.json
 .dyad/
+
+.vs/
+fix_final.cjs
+fix_final.py
+fix_it.cjs
+fix_syntax.py
+generate_mock_data.js
+generate_mock_teams.cjs
+generate_mock_teams.js
+generate_teams.cjs
+generated_teams.json
+mock_teams.txt
+tsc_output.txt
+
+src/data/teams.ts
+src/utils/rating.ts
+src/utils/sfr.ts
+src/data/mockTeams.ts
+

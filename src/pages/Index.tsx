@@ -20,9 +20,7 @@ export const Index: React.FC = () => {
               <Logo size="xl" />
             </div>
             <h1 className="text-5xl md:text-7xl font-orbitron font-black mb-6">
-              <span className="text-white">Forge Your</span>
-              <br />
-              <span className="text-cyan-400">Competitive Path</span>
+              ScrimForge
             </h1>
             <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto mb-8 font-light">
               The premier League of Legends esports platform for serious teams seeking high-level competitive scrims and growth.

@@ -35,24 +35,58 @@ export const TeamsLadder: React.FC = () => {
     <div className="min-h-screen bg-[#060A10] text-slate-200 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
-          <div>
-            <div className="flex items-center gap-3 mb-2">
-              <Trophy className="w-8 h-8 text-red-600" />
-              <h1 className="text-4xl font-orbitron font-bold text-white tracking-tight">
-                Global <span className="text-red-600">Ladder</span>
-              </h1>
+        <div className="relative mb-12 overflow-hidden rounded-3xl border border-white/5 bg-[#0A0F16]/40 backdrop-blur-md">
+          {/* Background Glows */}
+          <div className="absolute -top-24 -left-24 w-96 h-96 bg-red-600/10 rounded-full blur-[120px] pointer-events-none" />
+          <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-red-900/10 rounded-full blur-[120px] pointer-events-none" />
+          
+          <div className="relative p-8 md:p-12">
+            <div className="flex flex-col items-start gap-6">
+              <div className="flex items-center gap-4">
+                <div className="p-3 rounded-2xl bg-red-600/10 border border-red-600/20">
+                  <Trophy className="w-8 h-8 text-red-600" />
+                </div>
+                <div>
+                  <div className="text-xs font-bold uppercase tracking-[0.3em] text-red-500 mb-1">Competitive Rankings</div>
+                  <h1 className="text-4xl md:text-6xl font-orbitron font-bold text-white tracking-tighter">
+                    SCRIMFORGE <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-red-800">LADDER</span>
+                  </h1>
+                </div>
+              </div>
+              
+              <div className="flex flex-col md:flex-row md:items-center justify-between w-full gap-6">
+                <p className="text-slate-400 text-lg max-w-2xl leading-relaxed">
+                  The definitive global ranking of the top 100 ScrimForge teams. 
+                  <span className="text-slate-200"> Forge your legacy, climb the tiers, and dominate the competitive landscape.</span>
+                </p>
+                
+                <div className="flex items-center gap-4 px-6 py-3 rounded-xl bg-white/5 border border-white/10 shrink-0">
+                  <div className="flex flex-col">
+                    <span className="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Powered by</span>
+                    <span className="text-sm font-bold text-red-500 font-mono">SFR RATING SYSTEM</span>
+                  </div>
+                  <div className="w-px h-8 bg-white/10" />
+                  <div className="flex items-center gap-2 text-red-500/80">
+                    <div className="w-2 h-2 rounded-full bg-red-600 animate-pulse" />
+                    <span className="text-xs font-bold uppercase tracking-tighter">Live Data</span>
+                  </div>
+                </div>
+              </div>
             </div>
-            <p className="text-slate-400 max-w-2xl">
-              The definitive global ranking of the top 100 ScrimForge teams. Compete, earn Elo, and climb to the pinnacle of the competitive landscape.
-            </p>
           </div>
+          
+          {/* Bottom accent line */}
+          <div className="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-600/50 to-transparent" />
         </div>
 
+
         {/* Main Content */}
-        <div className="bg-[#0A0F16]/50 border border-white/5 rounded-2xl overflow-hidden backdrop-blur-sm">
+        {/* Leaderboard Section */}
+        <div className="relative bg-[#0D1117] border border-white/5 rounded-2xl overflow-hidden shadow-2xl shadow-red-950/20">
+          {/* Subtle Top Accent */}
+          <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-red-900/50 to-transparent" />
           {/* Table Header */}
-          <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-4 bg-white/5 border-b border-white/5 text-xs font-semibold uppercase tracking-wider text-slate-500">
+          <div className="hidden md:grid grid-cols-12 gap-4 px-8 py-4 bg-gradient-to-b from-white/[0.03] to-transparent border-b border-white/5 text-[10px] font-bold uppercase tracking-[0.25em] text-slate-500">
             <div className="col-span-1 text-center">Rank</div>
             <div className="col-span-4">Team</div>
             <div className="col-span-2 text-center">SFR</div>
@@ -76,17 +110,14 @@ export const TeamsLadder: React.FC = () => {
                 >
                   {/* Rank */}
                   <div className="col-span-1 flex items-center justify-center">
-                    <div className="relative flex items-center justify-center w-8 h-8">
-                      {entry.rank <= 3 ? (
-                        <Crown className={`w-6 h-6 ${
-                          entry.rank === 1 ? 'text-amber-400' : 
-                          entry.rank === 2 ? 'text-slate-300' : 'text-orange-400'
-                        }`} />
-                      ) : (
-                        <span className="text-lg font-orbitron font-bold text-slate-500 group-hover:text-red-600 transition-colors">
-                          #{entry.rank}
-                        </span>
-                      )}
+                    <span className={`text-lg font-orbitron font-bold transition-colors ${
+                      entry.rank === 1 ? 'text-amber-500' :
+                      entry.rank === 2 ? 'text-slate-400' :
+                      entry.rank === 3 ? 'text-orange-600' :
+                      'text-slate-500 group-hover:text-red-500'
+                    }`}>
+                      #{entry.rank}
+                    </span>
                       
 
                     </div>
@@ -95,30 +126,25 @@ export const TeamsLadder: React.FC = () => {
                   {/* Team Info */}
                   <div className="col-span-4 flex items-center gap-4">
                     <div className="relative">
-                      <div className="w-12 h-12 rounded-lg overflow-hidden border border-white/10 shadow-lg">
+                      <div className="w-12 h-12 rounded-xl overflow-hidden border border-white/10 shadow-xl bg-white/5">
                         <img 
                           src={entry.team.logo} 
                           alt={entry.team.name} 
                           className="w-full h-full object-cover"
                         />
                       </div>
-                      {entry.rank <= 3 && (
-                         <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-red-600 rounded-full border-2 border-[#060A10] flex items-center justify-center">
-                           <Award className="w-2 h-2 text-[#060A10]" />
-                         </div>
-                      )}
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h3 className={`font-bold transition-colors cursor-pointer group-hover:text-red-600 ${
-  entry.rank === 1 ? 'text-amber-50' :
-  entry.rank === 2 ? 'text-slate-50' :
-  entry.rank === 3 ? 'text-orange-50' :
-  'text-white'
-}`}>
+                        <h3 className={`text-lg font-extrabold tracking-tight transition-colors cursor-pointer group-hover:text-red-500 ${
+                          entry.rank === 1 ? 'text-amber-50' :
+                          entry.rank === 2 ? 'text-slate-50' :
+                          entry.rank === 3 ? 'text-orange-50' :
+                          'text-white'
+                        }`}>
                           {entry.team.name}
                         </h3>
-                        <span className="text-[10px] font-mono text-slate-500 px-1.5 py-0.5 bg-white/5 rounded">
+                        <span className="text-[10px] font-bold tracking-widest uppercase text-slate-400 bg-white/5 px-1.5 py-0.5 rounded border border-white/10">
                           {entry.team.tag}
                         </span>
                       </div>
